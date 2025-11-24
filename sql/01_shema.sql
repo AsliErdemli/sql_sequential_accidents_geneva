@@ -1,5 +1,20 @@
--- Schema for accident events database
--- Accident events 
+-- Schema for accident and public transport stops databases: building raw tables
+
+
+ROLLBACK; -- aborts all previous commands in case of error
+
+DROP SCHEMA public CASCADE;-- clean up all existing tables
+
+--Recreate public schema, since I just destroyed it
+CREATE SCHEMA public
+  AUTHORIZATION postgres;
+
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA public TO public;
+COMMENT ON SCHEMA public
+  IS 'standard public schema';
+
+-- Create Accident table (raw) 
 DROP TABLE IF EXISTS accidents_raw;
 CREATE TABLE accidents_raw (
     accident_id SERIAL PRIMARY KEY,
@@ -8,14 +23,14 @@ CREATE TABLE accidents_raw (
     year INT, 
     month INT, 
     weekday INT, 
-    accident_type   TEXT,
-    event_description   TEXT,
-    weather_condition   TEXT,
+    accident_type  TEXT,
+    event_description  TEXT,
+    weather_condition  TEXT,
     N   DOUBLE PRECISION,
     E   DOUBLE PRECISION
-    );
+);
 
--- Public trasport stops 
+-- Create Public trasport stops (raw)
 DROP TABLE IF EXISTS stops_raw;
 CREATE TABLE stops_raw (
     stop_id SERIAL PRIMARY KEY,
@@ -30,19 +45,3 @@ CREATE TABLE stops_raw (
 
 -- Enable PostGIS
 CREATE EXTENSION IF NOT EXISTS postgis;
-
-ALTER TABLE accidents_raw
-ADD COLUMN geom geometry(Point, 2056); -- accidents raw uses CH1903+ / LV95 coordinate system. 2056 is the EPSG code (SRID) for that.
-
-UPDATE accidents_raw
-SET geom = ST_SetSRID(ST_MakePoint(E, N, 2056);
-
-ALTER TABLE stops_raw
-ADD COLUMN geom geometry(Point, 2056);
-
-UPDATE stops_raw
-SET geom = ST_SetSRID(ST_MakePoint(E, N), 2056);
-
--- Spatial indexes
-CREATE INDEX idx_accidents_geom ON accidents_raw USING GIST (geom);
-CREATE INDEX idx_stops_geom     ON stops_raw     USING GIST (geom);
