@@ -6,7 +6,7 @@
             "server": "localhost",
             "port": 5432,
             "driver": "PostgreSQL",
-            "name": "connection1",
+            "name": "PostgesApp",
             "database": "asli",
             "username": "asli"
         }
