@@ -1,6 +1,8 @@
 --  How do accidents distribute over time?
 
 -- Accidents per year + severity 
+DROP MATERIALIZED VIEW IF EXISTS my_accidents_by_year;
+CREATE MATERIALIZED VIEW my_accidents_by_year AS
 SELECT
     ANNEE as year,
     CONSEQUENCES as severity,
@@ -14,6 +16,8 @@ ORDER BY ANNEE, CONSEQUENCES;
 -- Accidents by hour of day
 -- First, we need to extract the hour from HEURE text field
 -- Format appears to be: 18991230HHMMSS (last 6 digits are HHMMSS)
+DROP MATERIALIZED VIEW IF EXISTS my_accidents_by_hour_of_day;
+CREATE MATERIALIZED VIEW my_accidents_by_hour_of_day AS
 SELECT
     SUBSTRING(HEURE, 9, 2)::INT AS hour_of_day,
     COUNT(*) AS accident_count
@@ -24,6 +28,8 @@ ORDER BY hour_of_day;
 
 
 -- Accidents by day of week
+DROP MATERIALIZED VIEW IF EXISTS my_accidents_by_day_of_week;
+CREATE MATERIALIZED VIEW my_accidents_by_day_of_week AS
 SELECT
     JOUR AS day_of_week,
     COUNT(*) AS accident_count
@@ -41,6 +47,8 @@ ORDER BY
     END;
 
 -- Accidents by month
+DROP MATERIALIZED VIEW IF EXISTS my_accidents_by_month;
+CREATE MATERIALIZED VIEW my_accidents_by_month AS
 SELECT
     EXTRACT(MONTH FROM DATE_) AS month,
     TO_CHAR(DATE_, 'Month') AS month_name,
@@ -50,6 +58,8 @@ GROUP BY month, month_name
 ORDER BY month;
 
 -- Accidents by lighting conditions
+DROP MATERIALIZED VIEW IF EXISTS my_accidents_by_light;
+CREATE MATERIALIZED VIEW my_accidents_by_light AS
 SELECT
     CONDITIONS_LUMINEUSES AS lighting_condition,
     COUNT(*) AS accident_count,
@@ -59,6 +69,8 @@ GROUP BY CONDITIONS_LUMINEUSES
 ORDER BY accident_count DESC;
 
 -- Accidents by weather conditions
+DROP MATERIALIZED VIEW IF EXISTS my_accidents_by_wheather;
+CREATE MATERIALIZED VIEW my_accidents_by_wheather AS
 SELECT
     CONDITIONS_METEO AS weather_condition,
     COUNT(*) AS accident_count,
@@ -68,6 +80,8 @@ GROUP BY CONDITIONS_METEO
 ORDER BY accident_count DESC;
 
 -- Temporal trend: accidents per year with totals
+DROP MATERIALIZED VIEW IF EXISTS my_accidents_temporal_trend;
+CREATE MATERIALIZED VIEW my_accidents_temporal_trend AS
 SELECT
     ANNEE AS year,
     COUNT(*) AS total_accidents,
@@ -79,6 +93,8 @@ GROUP BY ANNEE
 ORDER BY ANNEE;
 
 -- Peak accident times (day of week + hour)
+DROP MATERIALIZED VIEW IF EXISTS my_accidents_peak_times;
+CREATE MATERIALIZED VIEW my_accidents_peak_times AS
 SELECT
     JOUR AS day_of_week,
     SUBSTRING(HEURE, 9, 2)::INT AS hour_of_day,
