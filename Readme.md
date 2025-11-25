@@ -8,9 +8,9 @@ Information de la Source : Système d'information du territoire à Genève
 Source: Transports Publics Genevois (TPG), téléchargé le 22 nov 2025. 
 
 Questions we investigate in this project:
-Q1. How do accidents distribute over time?
-Q2. How close are accidents to the nearest public transport stop?
-Q3. Which stops are most dangerous?
+- How do accidents distribute over time?
+- How close are accidents to the nearest public transport stop?
+- Which stops are most dangerous?
 
 Tools: 
 - PostgreSQL for database
