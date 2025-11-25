@@ -7,12 +7,12 @@ Information de la Source : Système d'information du territoire à Genève
 - https://opendata.tpg.ch/explore/dataset/arrets/export/?disjunctive.arretcodelong&disjunctive.nomarret&disjunctive.commune&disjunctive.pays 
 Source: Transports Publics Genevois (TPG), téléchargé le 22 nov 2025. 
 
-##Questions we investigate in this project:
+## Questions we investigate in this project:
 - How do accidents distribute over time?
 - How close are accidents to the nearest public transport stop?
 - Which stops are most dangerous?
 
-##Tools: 
+## Tools: 
 - PostgreSQL for database
 - PostGIS extension for geospatial data queries
 - SQL queries
